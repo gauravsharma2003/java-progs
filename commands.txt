@@ -1,0 +1,198 @@
+=====================================================================
+JAVA PROGRAMS EXECUTION COMMANDS (UPDATED)
+=====================================================================
+
+This file contains commands to compile and run different types of Java programs:
+- Servlet Program
+- Socket Program
+- Bean Program
+- Applet Program
+
+=====================================================================
+1. SERVLET PROGRAM
+=====================================================================
+
+# Navigate to project directory
+cd /Users/Gaurav.Sharma4/Desktop/java
+
+# Compilation
+mvn clean compile
+
+# Build WAR file
+mvn package
+
+# OPTION 1: Add Jetty plugin to pom.xml first
+# Add this to pom.xml in the <build><plugins> section:
+# <plugin>
+#   <groupId>org.eclipse.jetty</groupId>
+#   <artifactId>jetty-maven-plugin</artifactId>
+#   <version>9.4.46.v20220331</version>
+# </plugin>
+
+# Then run with Jetty
+mvn jetty:run
+
+# OPTION 2: Use Tomcat plugin instead (if Jetty is not available)
+# Add this to pom.xml in the <build><plugins> section:
+# <plugin>
+#   <groupId>org.apache.tomcat.maven</groupId>
+#   <artifactId>tomcat7-maven-plugin</artifactId>
+#   <version>2.2</version>
+#   <configuration>
+#     <port>8080</port>
+#     <path>/</path>
+#   </configuration>
+# </plugin>
+
+# Then run with Tomcat plugin
+mvn tomcat7:run
+
+# OPTION 3: Run with the exec plugin (works for non-servlet programs)
+mvn exec:java -Dexec.mainClass="com.example.BeanDemo"
+
+# Access the application
+http://localhost:8080/
+
+# Access specific servlets
+http://localhost:8080/hello
+http://localhost:8080/validate-user
+http://localhost:8080/display-person
+
+# Alternative: Deploy WAR to external Tomcat
+# Copy the WAR file to Tomcat webapps directory
+cp target/servlet-demo.war $TOMCAT_HOME/webapps/
+
+# Start Tomcat
+$TOMCAT_HOME/bin/startup.sh
+
+# Access the application (assuming default context name)
+http://localhost:8080/servlet-demo/
+
+=====================================================================
+2. SOCKET PROGRAM
+=====================================================================
+
+# Navigate to project directory
+cd /Users/Gaurav.Sharma4/Desktop/java
+
+# Compile the project (includes socket classes)
+mvn compile
+
+# Run Server (in one terminal)
+mvn exec:java -Dexec.mainClass="com.example.socket.SocketServer"
+
+# Run Client (in another terminal)
+mvn exec:java -Dexec.mainClass="com.example.socket.SocketClient"
+
+# Alternative: Run using java command directly
+java -cp target/classes com.example.socket.SocketServer
+java -cp target/classes com.example.socket.SocketClient
+
+=====================================================================
+3. BEAN PROGRAM
+=====================================================================
+
+# Navigate to project directory
+cd /Users/Gaurav.Sharma4/Desktop/java
+
+# Compile the Bean program
+mvn compile
+
+# Run the Bean Demo
+mvn exec:java -Dexec.mainClass="com.example.BeanDemo"
+
+# Alternative: Run directly with java command
+java -cp target/classes com.example.BeanDemo
+
+=====================================================================
+4. APPLET PROGRAM
+=====================================================================
+
+# Navigate to project directory
+cd /Users/Gaurav.Sharma4/Desktop/java
+
+# Compile the project (includes applet classes)
+mvn compile
+
+# Run the applet viewer (if you have Java 8 or earlier)
+appletviewer applet.html
+
+# Note: Modern browsers no longer support applets
+# You'll need to use the Java Control Panel to add security exceptions
+# or convert your applet to a standalone application
+
+# For running applet as a standalone program (if available)
+mvn exec:java -Dexec.mainClass="com.example.applet.SimpleAppletStandalone"
+
+=====================================================================
+SPECIFIC COMMAND SEQUENCES FOR YOUR PROJECT
+=====================================================================
+
+# SERVLET PROGRAM WITH JSP
+cd /Users/Gaurav.Sharma4/Desktop/java
+mvn clean package
+
+# Either add the Jetty plugin to pom.xml as described above, OR
+# use the following command to deploy to external Tomcat:
+cp target/servlet-demo.war $TOMCAT_HOME/webapps/
+$TOMCAT_HOME/bin/startup.sh
+
+# Then open browser at http://localhost:8080/servlet-demo/
+
+# BEAN PROGRAM (quickest way)
+cd /Users/Gaurav.Sharma4/Desktop/java
+mvn exec:java -Dexec.mainClass="com.example.BeanDemo"
+
+# SOCKET PROGRAM (assuming server/client already exist)
+# Terminal 1:
+cd /Users/Gaurav.Sharma4/Desktop/java
+mvn exec:java -Dexec.mainClass="com.example.socket.SocketServer"
+
+# Terminal 2:
+cd /Users/Gaurav.Sharma4/Desktop/java
+mvn exec:java -Dexec.mainClass="com.example.socket.SocketClient"
+
+# APPLET PROGRAM
+cd /Users/Gaurav.Sharma4/Desktop/java
+appletviewer applet.html
+
+=====================================================================
+NOTES:
+=====================================================================
+
+1. Ensure you have all required dependencies installed:
+   - JDK (Java Development Kit)
+   - Maven
+   - Tomcat/Jetty for servlet programs
+
+2. Environment variables should be properly set:
+   - JAVA_HOME pointing to your JDK installation
+   - TOMCAT_HOME (if using Tomcat)
+   - Maven in your PATH
+
+3. If using IDE (Eclipse, IntelliJ, NetBeans):
+   - Maven goals can be run from the IDE
+   - Run configurations can be created for each program type
+
+4. Port conflicts:
+   - The default ports used are:
+     * Tomcat/Jetty: 8080
+     * Socket example: Usually 9000-9999
+   - Change the ports if they conflict with other applications
+
+5. Security considerations:
+   - Modern browsers restrict running applets for security reasons
+   - Servlet applications should use HTTPS in production
+   - Socket applications should implement proper security measures
+
+6. Java version compatibility:
+   - Servlet program works with Java 8+
+   - Socket and Bean programs are compatible with most Java versions
+   - Applets are deprecated as of Java 9 and removed in Java 11
+
+7. Troubleshooting common issues:
+   - If Maven can't find the main class, ensure package names are correct
+   - For servlet issues, check the server logs in target/logs
+   - For bean issues, ensure the bean follows Java Bean conventions
+   - For applet issues on modern systems, consider converting to a standalone app
+   - If "No plugin found for prefix 'jetty'" error occurs, add the Jetty plugin to pom.xml first 
